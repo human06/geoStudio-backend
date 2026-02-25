@@ -25,7 +25,14 @@ geoStudio.Backend/
 
 ## Quick Start
 
-### 1. Start infrastructure (PostgreSQL + Redis)
+### 1. Clone and setup
+
+```bash
+git clone https://github.com/yourusername/geoStudio-Backend.git
+cd geoStudio.Backend
+```
+
+### 2. Start infrastructure (PostgreSQL + Redis)
 
 ```bash
 docker compose up postgres redis -d
@@ -118,7 +125,8 @@ dotnet ef migrations add <MigrationName> \
 ### SignalR
 | Hub | Path | Description |
 |-----|------|-------------|
-| AuditHub | `/hubs/audit` | Real-time audit progress |
+| AuditHub | `/hubs/audit` | Business-scoped audit notifications |
+| AuditProgressHub | `/hubs/audit-progress` | Real-time per-audit progress tracking |
 
 ## Tech Stack
 
