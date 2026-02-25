@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="geoStudio.API/geoStudio.API.csproj" />
+  <Project Path="geoStudio.Application/geoStudio.Application.csproj" />
+  <Project Path="geoStudio.BackgroundJobs/geoStudio.BackgroundJobs.csproj" />
+  <Project Path="geoStudio.Domain/geoStudio.Domain.csproj" />
+  <Project Path="geoStudio.Infrastructure/geoStudio.Infrastructure.csproj" />
+  <Project Path="geoStudio.Tests/geoStudio.Tests.csproj" />
+</Solution>
