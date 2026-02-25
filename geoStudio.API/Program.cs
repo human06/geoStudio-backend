@@ -2,10 +2,11 @@ using System.Text;
 using geoStudio.API.Hubs;
 using geoStudio.API.Middleware;
 using geoStudio.Application;
+using geoStudio.BackgroundJobs;
+using geoStudio.BackgroundJobs.Hangfire;
 using geoStudio.Infrastructure;
 using geoStudio.Infrastructure.Persistence;
 using Hangfire;
-using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +17,8 @@ using Serilog;
 // Bootstrap Serilog early so startup errors are captured
 // ──────────────────────────────────────────────
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
+    .MinimumLevel.Information()
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
     .CreateBootstrapLogger();
 
 try
@@ -32,11 +34,12 @@ try
         .ReadFrom.Configuration(ctx.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
-        .WriteTo.Console()
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
         .WriteTo.File(
             path: "logs/geostudio-.log",
             rollingInterval: RollingInterval.Day,
-            retainedFileCountLimit: 14));
+            outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+            retainedFileCountLimit: 30));
 
     // ──────────────────────────────────────────────
     // Application & Infrastructure layers
@@ -103,10 +106,7 @@ try
     // ──────────────────────────────────────────────
     // SignalR
     // ──────────────────────────────────────────────
-    builder.Services.AddSignalR(options =>
-    {
-        options.EnableDetailedErrors = builder.Environment.IsDevelopment();
-    });
+    builder.Services.AddSignalRServices();
 
     // ──────────────────────────────────────────────
     // Controllers & API
@@ -157,18 +157,7 @@ try
     // ──────────────────────────────────────────────
     // Hangfire
     // ──────────────────────────────────────────────
-    var hangfireConnStr = builder.Configuration.GetConnectionString("DefaultConnection")!;
-    builder.Services.AddHangfire(config => config
-        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-        .UseSimpleAssemblyNameTypeSerializer()
-        .UseRecommendedSerializerSettings()
-        .UsePostgreSqlStorage(hangfire => hangfire.UseNpgsqlConnection(hangfireConnStr)));
-
-    builder.Services.AddHangfireServer(options =>
-    {
-        options.WorkerCount = 4;
-        options.ServerName = "geoStudio-jobs";
-    });
+    builder.Services.AddHangfireServices(builder.Configuration);
 
     // ──────────────────────────────────────────────
     // Health checks
@@ -225,8 +214,12 @@ try
         });
     }
 
+    // Register / refresh all recurring job schedules
+    HangfireJobScheduler.ScheduleRecurringJobs();
+
     app.MapControllers();
     app.MapHub<AuditHub>("/hubs/audit");
+    app.MapHub<AuditProgressHub>("/hubs/audit-progress");
     app.MapHealthChecks("/health");
 
     await app.RunAsync();

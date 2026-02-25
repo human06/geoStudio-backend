@@ -50,6 +50,7 @@ appsettings.Secrets.json
 appsettings.Local.json
 .env
 .env.*
+!.env.example
 secrets.json
 
 ## Docker volumes

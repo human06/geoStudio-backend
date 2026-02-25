@@ -10,7 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.18" />
     <PackageReference Include="Hangfire.Core" Version="1.8.18" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.20.10" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
     <PackageReference Include="Polly" Version="8.5.2" />
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
@@ -19,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\geoStudio.Application\geoStudio.Application.csproj" />
     <ProjectReference Include="..\geoStudio.Domain\geoStudio.Domain.csproj" />
+    <ProjectReference Include="..\geoStudio.Infrastructure\geoStudio.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

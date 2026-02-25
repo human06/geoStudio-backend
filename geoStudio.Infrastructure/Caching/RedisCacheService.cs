@@ -4,19 +4,10 @@ using Microsoft.Extensions.Logging;
 
 namespace geoStudio.Infrastructure.Caching;
 
-/// <summary>Redis-backed distributed cache service.</summary>
-public interface IRedisCacheService
-{
-    Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default);
-    Task SetAsync<T>(string key, T value, TimeSpan? expiry = null, CancellationToken cancellationToken = default);
-    Task RemoveAsync(string key, CancellationToken cancellationToken = default);
-    Task<bool> ExistsAsync(string key, CancellationToken cancellationToken = default);
-}
-
-/// <inheritdoc />
+/// <summary>Redis-backed implementation of <see cref="ICacheService"/>.</summary>
 public sealed class RedisCacheService(
     IDistributedCache cache,
-    ILogger<RedisCacheService> logger) : IRedisCacheService
+    ILogger<RedisCacheService> logger) : ICacheService
 {
     private static readonly TimeSpan DefaultExpiry = TimeSpan.FromMinutes(30);
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };

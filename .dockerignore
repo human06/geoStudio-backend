@@ -1,0 +1,24 @@
+**/.classpath
+**/.dockerignore
+**/.env
+**/.git
+**/.gitignore
+**/.project
+**/.settings
+**/.toolstarget
+**/.vs
+**/.vscode
+**/.*proj.user
+**/bin
+**/obj
+**/target
+logs/
+
+# Test projects
+**/geoStudio.Tests/
+
+# NuGet packages cache
+**/.nuget/
+
+# User secrets
+**/secrets.json

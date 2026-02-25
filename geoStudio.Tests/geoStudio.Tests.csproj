@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\geoStudio.API\geoStudio.API.csproj" />
     <ProjectReference Include="..\geoStudio.Application\geoStudio.Application.csproj" />
+    <ProjectReference Include="..\geoStudio.BackgroundJobs\geoStudio.BackgroundJobs.csproj" />
     <ProjectReference Include="..\geoStudio.Domain\geoStudio.Domain.csproj" />
     <ProjectReference Include="..\geoStudio.Infrastructure\geoStudio.Infrastructure.csproj" />
   </ItemGroup>
