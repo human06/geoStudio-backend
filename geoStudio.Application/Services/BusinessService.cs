@@ -1,6 +1,7 @@
 using geoStudio.Application.DTOs;
 using geoStudio.Application.Interfaces;
 using geoStudio.Domain.Entities;
+using Task = System.Threading.Tasks.Task;
 using Microsoft.Extensions.Logging;
 
 namespace geoStudio.Application.Services;

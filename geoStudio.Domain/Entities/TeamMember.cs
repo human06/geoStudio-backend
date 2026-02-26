@@ -19,5 +19,5 @@ public class TeamMember
     // Navigation properties
     public BusinessProfile Business { get; set; } = null!;
     public User User { get; set; } = null!;
-    public User? InvitedByUser { get; set; }
+    public User? InvitedBy { get; set; }
 }
